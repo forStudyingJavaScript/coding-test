@@ -1,5 +1,5 @@
 const solution = (arr, k) => arr.map(element => k % 2 === 0? element + k : element * k);
-// // TC = O(n), SC = O(n) n는 배열arr의 길이
+// TC = O(n), SC = O(n) n는 배열arr의 길이
 
 // const solution = (arr, k) => {
 //   let res = [];

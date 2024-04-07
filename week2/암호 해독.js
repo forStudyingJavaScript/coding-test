@@ -6,7 +6,7 @@ const solution = (cipher, code) => [...cipher].filter((_, i) => (i + 1) % code =
 //   for (let i = code; i <= cipher.length; i += code) res += cipher[i - 1];
 
 //   return res;
-// }
+// };
 // // TC = O(n), SC = O(n), n는 문자열cipher의 길이
 
 console.log(solution("dfjardstddetckdaccccdegk", 4));

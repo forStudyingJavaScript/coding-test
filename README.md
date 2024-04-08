@@ -147,3 +147,164 @@ const solution = (arr, k) => arr.map((v) => (k % 2 === 0 ? v + k : v * k));
 `arr.map((v) => (k % 2  ? v * k : v + k));` 이었는데요.
 저는 `k % 2 === 0` 이라는 조건이 더 읽기 쉬워서 위와 같이 풀어보았는데,
 여러분의 생각은 어떠신가요?
+
+</br>
+</br>
+
+---
+
+### 4/8 [week2] 4~6번 추가 내용
+
+---
+
+</br>
+</br>
+
+## 4
+
+### 문제 - <code>암호 해독 (120892)</code>
+
+### 알고리즘 설계
+
+1. for문
+
+- 암호를 순회하며
+- code의 배수에 적합한 값만 res에 담아 리턴
+
+### 풀이 코드
+
+```javascript
+const solution = (cipher, code) => {
+  let res = "";
+  for (let i = 0; i < cipher.length; i++) {
+    if ((i + 1) % code === 0) {
+      res += cipher[i];
+    }
+  }
+  return res;
+};
+```
+
+### 개인적인 회고와 다른 풀이
+
+2. 함수형
+   문자열을 쪼갠 후, 필터로 순회한 후 필요한 인덱스 값만 모아 문자를 만듭니다.
+
+- split()
+- filter()
+- join()
+  메서드를 사용하여 다시 풀어 보았습니다.
+
+```javascript
+const solution = (cipher, code) =>
+  cipher
+    .split("")
+    .filter((_, i) => (i + 1) % code === 0)
+    .join("");
+```
+
+### 느낀 점
+
+이제는 순회할 때 아무래도 바로 정답으로 향하지는 않지만, filter를 이용해서 푸는 방법은 없을까 생각해보게 되는것 같습니다!
+
+## 5
+
+### 문제 - <code>가운데 글자 가져오기 (12903)</code>
+
+### 알고리즘 설계
+
+1. 함수식
+
+- 먼저, 문자를 반으로 자른 후
+- 글자수가 홀수일 때와 짝수일 때를 가정하여 값을 찾는 방법을 생각해 보았습니다.
+
+- Math.ceil() : 올림. 글자수가 홀수일 경우 소수점으로 나눠지기 때문에 나눈 값은 올림값으로 설정.
+- slice() : 문자열의 일부를 추출하면서 새로운 문자열을 반환합니다.
+
+### 풀이 코드
+
+```javascript
+const solution = (s) => {
+  const nums = s.length;
+  let sliceNum = Math.ceil(nums / 2);
+  let res = "";
+
+  if (nums % 2 !== 0) {
+    res = s.slice(sliceNum - 1, sliceNum);
+  } else {
+    res = s.slice(sliceNum - 1, sliceNum + 1);
+  }
+  return res;
+};
+```
+
+### 개인적인 회고와 다른 풀이
+
+2. 삼항 연산자
+
+- 식이 너무 길어서 삼항연산자로 정리해 보았습니다.
+
+```javascript
+const solution = (s) => {
+  let sliceNum = Math.ceil(s.length / 2);
+  return s.length % 2 !== 0
+    ? s.slice(sliceNum - 1, sliceNum)
+    : s.slice(sliceNum - 1, sliceNum + 1);
+};
+```
+
+### 느낀 점
+
+식을 더 간결하게 정리할 방법이 있을 듯한데 더 생각이 안나네요..🧐
+
+## 6
+
+### 문제 - <code>두 정수 사이의 합 (12912)</code>
+
+### 알고리즘 설계
+
+1. 조건문
+
+- 조건문을 이용하여 a, b로 나오는 값을 크기 비교로 모두 작성하였습니다.
+
+### 풀이 코드
+
+```javascript
+const solution = (a, b) => {
+  let res = 0;
+
+  if (a < b) {
+    for (i = a; i <= b; i++) {
+      res += i;
+    }
+  } else if (b < a) {
+    for (i = b; i <= a; i++) {
+      res += i;
+    }
+  } else {
+    res = a;
+  }
+  return res;
+};
+```
+
+### 개인적인 회고와 다른 풀이
+
+2. 함수형
+
+- Math 메서드를 이용하여 풀어보았습니다.
+- Math.min()
+- Math.max()
+
+```javascript
+const solution = (a, b) => {
+  let res = 0;
+  for (let i = Math.min(a, b); i <= Math.max(a, b); i++) res += i;
+  return res;
+};
+```
+
+### 느낀 점
+
+조건문의 경우 모든 식에 대해 조건을 걸어 줘야해서 읽기는 쉽지만 코드 정리가 다소 아쉽다는 생각이 들었습니다.
+확실히 메서드를 이용한 식이 더 간결하고 읽기 쉬운 것 같습니다.

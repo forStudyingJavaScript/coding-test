@@ -12,11 +12,33 @@
 1 ≤ code ≤ cipher의 길이
 cipher는 소문자와 공백으로만 구성되어 있습니다.
 공백도 하나의 문자로 취급합니다.
- */
+
+1) for문
+- 암호를 순회하며
+- code의 배수에 적합한 값만 res에 담아 리턴
 
 const solution = (cipher, code) => {
-  //do something
+  let res = "";
+  for (let i = 0; i < cipher.length; i++) {
+    if ((i + 1) % code === 0) {
+      res += cipher[i];
+    }
+  }
+  return res;
 };
+
+2) 함수형
+- split()
+- filter()
+- join()
+
+ */
+
+const solution = (cipher, code) =>
+  cipher
+    .split("")
+    .filter((_, i) => (i + 1) % code === 0)
+    .join("");
 
 console.log(solution("dfjardstddetckdaccccdegk", 4)); // "attack"
 console.log(solution("pfqallllabwaoclk", 2)); // "fallback"

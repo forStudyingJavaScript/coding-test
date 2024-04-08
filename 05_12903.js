@@ -5,7 +5,8 @@
 
 제한사항
 s는 길이가 1 이상, 100이하인 스트링입니다.
- */
+
+1) 조건문
 
 const solution = (s) => {
   const nums = s.length;
@@ -18,6 +19,17 @@ const solution = (s) => {
     res = s.slice(sliceNum - 1, sliceNum + 1);
   }
   return res;
+};
+
+2) 삼항 연산자
+- 식이 너무 길어서 삼항연산자로 정리해 보았습니다.
+ */
+
+const solution = (s) => {
+  let sliceNum = Math.ceil(s.length / 2);
+  return s.length % 2 !== 0
+    ? s.slice(sliceNum - 1, sliceNum)
+    : s.slice(sliceNum - 1, sliceNum + 1);
 };
 
 console.log(solution("abcde")); //"c"

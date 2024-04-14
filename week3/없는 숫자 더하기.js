@@ -3,7 +3,7 @@ const solution = (numbers) => {
               .filter(el => !numbers.includes(el))
               .reduce((sum, current) => sum + current, 0);
 };
-// TC = O(n), SC = O(n);
+// TC = O(n), SC = O(1);
 
 // const solution = (numbers) => {
 //   const numList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -24,7 +24,7 @@ const solution = (numbers) => {
 
 //   return sum;
 // };
-// // TC = O(n^2), SC = O(1);
+// // TC = O(n), SC = O(1);
 
 console.log(solution([1, 2, 3, 4, 6, 7, 8, 0])); //14
 console.log(solution([5, 8, 4, 0, 6, 7, 9])); //6

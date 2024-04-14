@@ -16,7 +16,7 @@ const solution = (numbers, direction) => {
 //     res.push(numbers[numbers.length - 1]);
 //     for (let i = 0; i < numbers.length - 1; i++) res.push(numbers[i]);
 //   } else {
-//     for (let i = 1; i < numbers.length - 1; i++) res.push (numbers[i]);
+//     for (let i = 1; i < numbers.length; i++) res.push (numbers[i]);
 //     res.push(numbers[0]);
 //   }
 

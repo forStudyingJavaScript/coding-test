@@ -1,8 +1,6 @@
 const solution = (age) => {
   const alphabetList = Array.from({ length: 26 }, (_, i) => String.fromCharCode(i + 97));
-  const ageStr = age + '';
-  
-  return [...ageStr].reduce((acc, index) => acc + alphabetList[index], '');
+  return [...age + ''].reduce((acc, index) => acc + alphabetList[index], '');
 };
 // TC = O(n), SC = O(n);
 

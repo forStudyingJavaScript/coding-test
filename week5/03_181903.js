@@ -19,6 +19,6 @@ const solution1 = (q, r, code) => {
 
 const solution2 = (q, r, code) => {
   let res = "";
-  [...code].map((a, i) => (i % q === r ? (res += a) : res));
+  [...code].map((e, i) => (i % q === r ? (res += e) : res));
   return res;
 };

@@ -7,10 +7,10 @@
 const solution = (s) => {
   let res = 0;
   let arr = s.split(" ");
-  
-  arr.forEach((v, i) => {
-    if (v === "Z") res -= Number(arr[i - 1]);
-    else res += Number(v);
+
+  arr.forEach((e, i) => {
+    if (e === "Z") res -= +arr[i - 1];
+    else res += +e;
   });
 
   return res;

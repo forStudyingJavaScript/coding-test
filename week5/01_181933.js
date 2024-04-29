@@ -7,7 +7,12 @@ flag에 따라 다른 값 반환하기 (181933)
 -1,000 ≤ a, b ≤ 1,000
 */
 
-const solution = (a, b, flag) => (flag ? a + b : a - b);
+const solution1 = (a, b, flag) => (flag ? a + b : a - b);
+
+const solution2 = (a, b, flag) => {
+  if (flag === true) return a + b;
+  return a - b;
+};
 
 console.log(-4, 7, true);
 console.log(-4, 7, false);

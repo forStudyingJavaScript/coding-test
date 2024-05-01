@@ -14,5 +14,5 @@ const solution2 = (a, b, flag) => {
   return a - b;
 };
 
-console.log(-4, 7, true);
-console.log(-4, 7, false);
+console.log(solution1(-4, 7, true));
+console.log(solution1(-4, 7, false));

@@ -10,13 +10,14 @@ query를 순회하면서 다음 작업을 반복합니다.
 위 작업을 마친 후 남은 arr의 부분 배열을 return 하는 solution 함수를 완성해 주세요.
 */
 
-const solutionX = (arr, query) => {
+const solution = (arr, query) => {
+  let res = [...arr];
   for (let i = 0; i < query.length; i++) {
     i % 2 === 0
-      ? (arr = arr.slice(0, query[i]).concat(arr.slice(query[i] + 1)))
-      : (arr = arr.slice(query[i] + 1));
+      ? (res = res.slice(0, query[i] + 1))
+      : (res = res.slice(query[i]));
   }
-  return arr;
+  return res;
 };
 
 const solution1 = (arr, query) => {

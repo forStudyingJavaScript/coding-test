@@ -16,8 +16,14 @@ const solution1 = (arr) => {
 const solution2 = (arr) =>
   arr.length === 1 ? [-1] : arr.filter((i) => i !== Math.min(...arr));
 
-const solution = (arr) =>
-  arr.length === 1 ? [-1] : arr.splice(arr.indexOf(Math.min(...arr)), 1);
+const solution = (arr) => {
+  return arr.length === 1
+    ? [-1]
+    : (() => {
+        arr.splice(arr.indexOf(Math.min(...arr)), 1);
+        return arr;
+      })();
+};
 
 console.log(solution([4, 3, 2, 1]));
 console.log(solution([10]));

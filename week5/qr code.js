@@ -4,7 +4,7 @@
 //                                           .join('');
 // // TC = O(n); SC = O(n); 
 
-const solution = (q, r, code) => [...code].filter((_, i) => i % q === r).join('');
+// const solution = (q, r, code) => [...code].filter((_, i) => i % q === r).join('');
 
 console.log(solution(3, 1, "qjnwezgrpirldywt")); //'jerry'
 console.log(solution(1, 0, "programmers")); //'programmers'

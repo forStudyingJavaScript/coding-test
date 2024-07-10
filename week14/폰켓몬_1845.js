@@ -34,44 +34,18 @@ nums	result
 가장 많은 종류의 폰켓몬을 고르기 위해서는 3번 폰켓몬 한 마리와 2번 폰켓몬 두 마리를 고르거나, 혹은 3번 폰켓몬 두 마리와 2번 폰켓몬 한 마리를 고르면 됩니다. 따라서 최대 고를 수 있는 폰켓몬 종류의 수는 2입니다.
 */
 
-function solution(s) {
-  // 1. 문자열: 숫자 형태의 배열 만들어준다.
-  const String_number = [
-    { zero: 0 },
-    { one: 1 },
-    { two: 2 },
-    { three: 3 },
-    { four: 4 },
-    { five: 5 },
-    { six: 6 },
-    { seven: 7 },
-    { eight: 8 },
-    { nine: 9 },
-  ];
-
-  // 2. 주어진 값을 split한다.
-  const split_s = s.split("");
-
-  // 3. 리턴하는 값을 배열로 만든다
-  const result = [];
-  let string_result = [];
-  // 4. forEach문을 통하여 리턴할 배열에 값을 넣는다.
-  split_s.forEach((split_s_content) => {
-    if (isNaN(split_s_content)) {
-      string_result.push(split_s_content);
-      if (string_result.length > 2) {
-        for (let i = 0; i < String_number.length; i++) {
-          if (string_result.join("") === Object.keys(String_number[i])[0]) {
-            string_result.splice(0);
-            return result.push(Object.values(String_number[i])[0]);
-          }
-        }
-      }
-    }
-
-    if (!isNaN(split_s_content)) return result.push(split_s_content);
+function solution(nums) {
+  // 1. nums를 오름차순으로 배치한다.
+  nums.sort((a, b) => {
+    return a - b;
   });
 
-  // 5. result를 join을 한 뒤, Number로 숫자형으로 변환시켜준다.
-  return Number(result.join(""));
+  // 2. 가져갈 수 있는 최대 갯수를 구한다.
+  const get_num = nums.length / 2;
+
+  // 3. 주어진 배열의 중복을 제거하여 배열을 만들어주고 길이를 구한다(폰켓몬 종류 수).
+  const no_dup_nums = Array.from(new Set([...nums])).length;
+
+  // 4. 가져갈 수 있는 최대 갯수가 폰켓몬 종류 수 보다 많으면 최대 갯수를, 아니면 폰켓몬 종류 수를 반환한다.
+  return get_num > no_dup_nums ? no_dup_nums : get_num;
 }

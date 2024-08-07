@@ -58,5 +58,5 @@ function solution(answers) {
   if (max === semi_result[1]) result.push(2);
   if (max === semi_result[2]) result.push(3);
 
-  return result.sort();
+  return result;
 }

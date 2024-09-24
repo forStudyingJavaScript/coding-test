@@ -8,16 +8,14 @@ function solution(board, h, w) {
   const dw = [1, 0, 0, -1];
   
   for (let i = 0; i < 4; i++) {
-      const h_check = h + dh[i];  // 새로운 행 위치 계산
-      const w_check = w + dw[i];  // 새로운 열 위치 계산
+    const h_check = h + dh[i];  // 새로운 행 위치 계산
+    const w_check = w + dw[i];  // 새로운 열 위치 계산
       
-      // 새 위치가 보드 범위 내에 있는지 확인
-      if (h_check >= 0 && h_check < n && w_check >= 0 && w_check < n) {
-          // 인접한 셀의 색상이 선택된 셀과 동일하면 카운트 증가
-          if (board[h_check][w_check] === color) {
-              count++;
-          }
-      }
+    // 새 위치가 보드 범위 내에 있는지 확인
+    if (h_check >= 0 && h_check < n && w_check >= 0 && w_check < n) {
+      // 인접한 셀의 색상이 선택된 셀과 동일하면 카운트 증가
+      if (board[h_check][w_check] === color) count++;
+    }
   }
   
   return count;

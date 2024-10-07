@@ -44,26 +44,26 @@
         <td align="center">
             <a href="https://github.com/oris8">:octocat: GitHub</a>
             <br />
-            <a href="./tree/이정민">:memo: 푼 문제들</a>
+            <a href="https://github.com/forStudyingJavaScript/coding-test/tree/%EC%9D%B4%EC%A0%95%EB%AF%BC">:memo: 푼 문제들</a>
         </td>
         <td align="center">
             <a href="https://github.com/Liz-Chung">:octocat: GitHub</a>
             <br />
-            <a href="./tree/Liz-Chung">:memo: 푼 문제들</a>
+            <a href="https://github.com/forStudyingJavaScript/coding-test/tree/Liz-chung">:memo: 푼 문제들</a>
         <td align="center">
             <a href="https://github.com/FrogBaek">:octocat: GitHub</a>
             <br />
-            <a href="./tree/백승헌">:memo: 푼 문제들</a>
+            <a href="https://github.com/forStudyingJavaScript/coding-test/tree/%EB%B0%B1%EC%8A%B9%ED%97%8C">:memo: 푼 문제들</a>
         </td>
         <td align="center">
             <a href="https://github.com/SeungHun6450">:octocat: GitHub</a>
             <br />
-            <a href="./tree/변승훈">:memo: 푼 문제들</a>
+            <a href="https://github.com/forStudyingJavaScript/coding-test/tree/%EB%B3%80%EC%8A%B9%ED%9B%88">:memo: 푼 문제들</a>
         </td>
         <td align="center">
             <a href="https://github.com/joarthvr">:octocat: GitHub</a>
             <br />
-            <a href="./tree/조천산">:memo: 푼 문제들</a>
+            <a href="https://github.com/forStudyingJavaScript/coding-test/tree/%EC%A1%B0%EC%B2%9C%EC%82%B0">:memo: 푼 문제들</a>
         </td>
     </tr>
 </table>

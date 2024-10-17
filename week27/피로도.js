@@ -29,5 +29,3 @@ function solution(k, dungeons) {
   exploreDungeons(k, 0);
   return maxExploredDungeons;
 }
-
-console.log(solution(80, [[80,20], [50,40], [30,10]])); // 3

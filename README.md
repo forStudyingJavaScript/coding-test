@@ -1,60 +1,25 @@
 ## 1
 
-### 문제 - <code>귤 고르기</code>
+### 문제 - <code>전화번호 목록</code>
 
 ### 알고리즘 설계
-
-1. 귤 크기 정렬
-
-- 입력된 귤 배열을 크기 순으로 정렬
-- 예) [1,3,2,5,4,5,2,3] → [1,2,2,3,3,4,5,5]
-
-2. 같은 크기 개수 세기
-
-- 정렬된 배열에서 연속된 같은 크기의 개수를 세어서 새 배열 저장
-- 예) [1,2,2,3,3,4,5,5] → size=[1,2,2,1,2] (1개, 2개, 2개, 1개, 2개)
-
-3. 개수 정렬
-
-- 구한 size 배열을 내림차순으로 정렬
-- 많은 것부터 적은 순으로 정렬
-- 예) size=[1,2,2,1,2] → [2,2,2,1,1]
-
-4. 필요한 종류 수 계산
-
-- k개의 귤을 고르기 위해
-- 개수가 많은 크기부터 하나씩 선택
-- k에서 선택한 개수를 빼면서 카운트
-- 카운트된 숫자가 필요한 최소 크기 종류의 수
-
-5. 결과 반환
-
-- 선택된 크기 종류의 수를 반환
-
-(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(k, tangerine) {
-  let size = [];
-  let q = 0;
-  tangerine = tangerine.sort((a, b) => a - b);
-  for (let i = 0; i < tangerine.length; i++) {
-    if (tangerine[i + 1] !== tangerine[i]) {
-      size.push(i + 1 - q);
-      q = i + 1;
+function solution(phone_book) {
+  // 전화번호를 사전순으로 정렬
+  phone_book.sort();
+
+  // 인접한 두 전화번호만 비교하면 됨
+  for (let i = 0; i < phone_book.length - 1; i++) {
+    // 현재 번호가 다음 번호의 접두어인지 확인
+    if (phone_book[i + 1].startsWith(phone_book[i])) {
+      return false;
     }
   }
-  size = size.sort((a, b) => b - a);
-  let i = 0;
-  let cnt = 0;
-  while (k > 0) {
-    k = k - size[i];
-    cnt++;
-    i++;
-  }
-  return cnt;
+
+  return true;
 }
 ```
 
@@ -68,97 +33,55 @@ function solution(k, tangerine) {
 
 ## 2
 
-### 문제 - <code>괄호 회전하기</code>
+### 문제 - <code>압축</code>
 
 ### 알고리즘 설계
-
-1. 문자열 준비
-
-- 입력받은 문자열 s를 배열로 변환 (s.split(""))
-  회전을 위해 길이만큼 반복할 준비
-
-2. 회전 시작
-
-- 문자열 길이만큼 반복하면서
-  매 반복마다 새로운 스택을 생성하고
-  첫 글자를 떼서 맨 뒤로 이동 (회전)
-
-3. 각 회전마다 괄호 검사
-   현재 문자열의 각 문자를 스택에 push
-   스택에 2개 이상 쌓이면 최근 2개를 꺼내서 확인
-
-   - [], (), {} 쌍이 맞으면 제거 (continue)ㄴ
-     안 맞으면 다시 스택에 넣기
-
-4. 검사 결과 확인
-   스택이 비어있으면 (size가 0)
-   모든 괄호가 올바르게 매칭된 것
-   cnt 증가
-
-5. 다음 회전
-   첫 글자를 떼서 맨 뒤로 보내고
-   2~4단계 반복
-
-6. 최종 결과
-   cnt 반환 (올바른 괄호 문자열이 되는 경우의 수)
 
 ### 풀이 코드
 
 ```jsx
-class Stack {
-  constructor() {
-    this.size = 0;
-    this.storage = new Object();
+function solution(msg) {
+  // 1. 길이가 1인 모든 단어를 포함하도록 사전 초기화
+  const dictionary = {};
+  for (let i = 0; i < 26; i++) {
+    const char = String.fromCharCode(65 + i); // A-Z
+    dictionary[char] = i + 1;
   }
-  push(element) {
-    this.size++;
-    this.storage[this.size] = element;
-  }
-  pop() {
-    if (this.size === 0) return;
-    let removed = this.storage[this.size];
-    delete this.storage[this.size];
-    this.size--;
-    return removed;
-  }
-  top() {
-    return this.size === 0 ? undefined : this.storage[this.size];
-  }
-}
 
-function solution(s) {
-  let stack = new Stack();
-  let cnt = 0;
-  let strArray = s.split("");
+  const result = [];
+  let nextIndex = 27; // 다음 사전 인덱스
+  let current = 0; // 현재 처리 중인 문자 위치
 
-  for (let j = 0; j < s.length; j++) {
-    stack = new Stack();
-    for (let i = 0; i < strArray.length; i++) {
-      stack.push(strArray[i]);
-      if (stack.size > 1) {
-        let top1 = stack.pop();
-        let top2 = stack.pop();
+  while (current < msg.length) {
+    let w = msg[current];
+    let maxLen = 1;
 
-        if (
-          (top2 === "[" && top1 === "]") ||
-          (top2 === "(" && top1 === ")") ||
-          (top2 === "{" && top1 === "}")
-        ) {
-          continue;
-        } else {
-          stack.push(top2);
-          stack.push(top1);
-        }
+    // 2. 사전에서 현재 입력과 일치하는 가장 긴 문자열 w를 찾는다
+    for (let i = 1; current + i <= msg.length; i++) {
+      const testWord = msg.slice(current, current + i);
+      if (dictionary[testWord]) {
+        w = testWord;
+        maxLen = i;
+      } else {
+        break;
       }
     }
 
-    if (stack.size === 0) cnt++; // 스택이 비어있다면 균형이 맞음
+    // 3. w에 해당하는 사전의 색인 번호를 출력
+    result.push(dictionary[w]);
 
-    // 문자열 회전
-    strArray.push(strArray.shift());
+    // 4. 다음 글자가 있다면, w+c를 사전에 등록
+    if (current + maxLen < msg.length) {
+      const nextChar = msg[current + maxLen];
+      const newWord = w + nextChar;
+      dictionary[newWord] = nextIndex++;
+    }
+
+    // 처리된 문자열만큼 현재 위치 이동
+    current += maxLen;
   }
 
-  return cnt;
+  return result;
 }
 ```
 
@@ -172,32 +95,53 @@ function solution(s) {
 
 ## 3
 
-### 문제 - <code>예상 대진표</code>
+### 문제 - <code>방문길이</code>
 
 ### 알고리즘 설계
-
-1. a와 b는 각 참가자의 번호
-2. 각 라운드마다 참가자 번호는 2로 나누고 올림을 해서 다음 라운드 번호가 됨
-
-예: 1,2 → 1로 / 3,4 → 2로
-
-3. 두 참가자의 다음 라운드 번호가 같아질 때까지 이 과정을 반복
-4. cnt는 라운드 수를 카운트
-
-(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(n, a, b) {
-  let cnt = 1;
-  while (Math.ceil(a / 2) !== Math.ceil(b / 2)) {
-    a = Math.ceil(a / 2);
-    b = Math.ceil(b / 2);
-    cnt++;
+function solution(dirs) {
+  // 방문한 경로를 저장할 Set
+  // 경로는 '시작x,시작y:도착x,도착y' 형태의 문자열로 저장
+  const visited = new Set();
+
+  // 현재 위치
+  let x = 0;
+  let y = 0;
+
+  // 방향에 따른 좌표 변화량
+  const moves = {
+    U: [0, 1],
+    D: [0, -1],
+    R: [1, 0],
+    L: [-1, 0],
+  };
+
+  for (const dir of dirs) {
+    // 다음 위치 계산
+    const nx = x + moves[dir][0];
+    const ny = y + moves[dir][1];
+
+    // 경계 체크
+    if (nx < -5 || nx > 5 || ny < -5 || ny > 5) continue;
+
+    // 양방향 경로를 저장 (A->B와 B->A는 같은 경로)
+    const path1 = `${x},${y}:${nx},${ny}`;
+    const path2 = `${nx},${ny}:${x},${y}`;
+
+    visited.add(path1);ㄴ
+    visited.add(path2);
+
+    // 현재 위치 업데이트
+    x = nx;
+    y = ny;
   }
 
-  return cnt;
+  // Set에 저장된 경로 개수의 절반이 실제 처음 걸어본 길의 길이
+  // (각 경로를 양방향으로 저장했으므로)
+  return visited.size / 2;
 }
 ```
 

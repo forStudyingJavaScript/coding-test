@@ -1,33 +1,53 @@
 ## 1
 
-### 문제 - <code>모음사전</code>
+### 문제 - <code>k진수에서 소수 개수 구하기</code>
 
 ### 알고리즘 설계
+
+(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(word) {
-  // 각 자리수별 영향도 계산
-  // 1번째 자리: 1
-  // 2번째 자리: 1 + 5
-  // 3번째 자리: 1 + 5 + 25
-  // 4번째 자리: 1 + 5 + 25 + 125
-  // 5번째 자리: 1 + 5 + 25 + 125 + 625
-  const weight = [781, 156, 31, 6, 1];
-  const vowels = ["A", "E", "I", "O", "U"];
+function isPrime(num) {
+  // 1 이하는 소수가 아님
+  if (num <= 1) return false;
 
-  let answer = 0;
+  // 2는 소수
+  if (num === 2) return true;
 
-  // 각 자리수별로 계산
-  for (let i = 0; i < word.length; i++) {
-    // 현재 문자가 몇번째 모음인지 찾기
-    const vowelIndex = vowels.indexOf(word[i]);
-    // 해당 자리수의 가중치를 곱하여 더함
-    answer += vowelIndex * weight[i] + 1;
+  // 짝수는 소수가 아님 (2 제외)
+  if (num % 2 === 0) return false;
+
+  // 제곱근까지만 확인하면 됨
+  for (let i = 3; i <= Math.sqrt(num); i += 2) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}
+
+function solution(n, k) {
+  // k진수로 변환
+  const K_JINSU = n.toString(k);
+
+  // 0을 기준으로 분리
+  const splitedArr = K_JINSU.split("0");
+
+  // 각 숫자를 확인하여 소수 개수 카운트
+  let count = 0;
+
+  for (let numStr of splitedArr) {
+    // 빈 문자열이나 공백은 건너뜀
+    if (numStr.trim() === "") continue;
+
+    // 문자열을 숫자로 변환하여 소수 판별
+    const num = parseInt(numStr, 10);
+    if (isPrime(num)) {
+      count++;
+    }
   }
 
-  return answer;
+  return count;
 }
 ```
 
@@ -41,31 +61,26 @@ function solution(word) {
 
 ## 2
 
-### 문제 - <code>영어끝말잇기</code>
+### 문제 - <code>뒤에 있는 큰 수 찾기</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(n, words) {
-  let cnt = 0;
-  let person = 1;
-  let past = [];
-  for (let i = 0; i < words.length; i++) {
-    if (i % n === 0) cnt++;
-    person = (i % n) + 1; // 참가자 번호 계산 수정
-    if (i > 0 && words[i - 1][words[i - 1].length - 1] !== words[i][0]) {
-      return [person, cnt];
+function solution(numbers) {
+  const result = new Array(numbers.length).fill(-1);
+  const stack = []; // [index, value]
+
+  for (let i = 0; i < numbers.length; i++) {
+    while (stack.length > 0 && numbers[i] > numbers[stack[stack.length - 1]]) {
+      result[stack.pop()] = numbers[i];
     }
-    if (past.includes(words[i])) {
-      return [person, cnt];
-    }
-    past.push(words[i]);
+    stack.push(i);
   }
-  return [0, 0];
+
+  return result;
 }
-ㄴ;
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -78,26 +93,36 @@ function solution(n, words) {
 
 ## 3
 
-### 문제 - <code>카드뭉치</code>
+### 문제 - <code>땅 따먹기</code>
 
 ### 알고리즘 설계
+
+(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(cards1, cards2, goal) {
-  for (let i = 0; i < 20; i++) {
-    if (goal[0] === cards1[0]) {
-      goal.shift();
-      cards1.shift();
-    } else if (goal[0] === cards2[0]) {
-      goal.shift();
-      cards2.shift();
-    } else {
-      return "No";
+function solution(land) {
+  // 행의 개수
+  const n = land.length;
+
+  // dp 배열 생성 (첫 행은 그대로 복사)
+  const dp = Array.from(Array(n), () => new Array(4).fill(0));
+  dp[0] = [...land[0]];
+
+  // 두 번째 행부터 시작
+  for (let i = 1; i < n; i++) {
+    // 각 열에 대해
+    for (let j = 0; j < 4; j++) {
+      // 이전 행에서 현재 열을 제외한 값들 중 최댓값을 더함
+      dp[i][j] =
+        land[i][j] +
+        Math.max(...[...dp[i - 1].slice(0, j), ...dp[i - 1].slice(j + 1)]);
     }
   }
-  return goal.length === 0 ? "Yes" : "No";
+
+  // 마지막 행에서 최댓값을 반환
+  return Math.max(...dp[n - 1]);
 }
 ```
 

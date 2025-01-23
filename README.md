@@ -1,6 +1,6 @@
 ## 1
 
-### 문제 - <code>k진수에서 소수 개수 구하기</code>
+### 문제 - <code>퍼즐게임챌린지</code>
 
 ### 알고리즘 설계
 
@@ -9,45 +9,38 @@
 ### 풀이 코드
 
 ```jsx
-function isPrime(num) {
-  // 1 이하는 소수가 아님
-  if (num <= 1) return false;
+function solution(diffs, times, limit) {
+  function canSolve(level) {
+    let total = 0;
 
-  // 2는 소수
-  if (num === 2) return true;
+    for (let i = 0; i < diffs.length; i++) {
+      if (diffs[i] <= level) {
+        if (total + times[i] > limit) return false;
+        total += times[i];
+      } else {
+        const fails = diffs[i] - level;
+        const retryTime = times[i] + (i > 0 ? times[i - 1] : 0);
 
-  // 짝수는 소수가 아님 (2 제외)
-  if (num % 2 === 0) return false;
-
-  // 제곱근까지만 확인하면 됨
-  for (let i = 3; i <= Math.sqrt(num); i += 2) {
-    if (num % i === 0) return false;
-  }
-  return true;
-}
-
-function solution(n, k) {
-  // k진수로 변환
-  const K_JINSU = n.toString(k);
-
-  // 0을 기준으로 분리
-  const splitedArr = K_JINSU.split("0");
-
-  // 각 숫자를 확인하여 소수 개수 카운트
-  let count = 0;
-
-  for (let numStr of splitedArr) {
-    // 빈 문자열이나 공백은 건너뜀
-    if (numStr.trim() === "") continue;
-
-    // 문자열을 숫자로 변환하여 소수 판별
-    const num = parseInt(numStr, 10);
-    if (isPrime(num)) {
-      count++;
+        if (fails > limit || retryTime > Math.floor(limit / fails))
+          return false;
+        const timeNeeded = retryTime * fails + times[i];
+        if (timeNeeded > limit || total + timeNeeded > limit) return false;
+        total += timeNeeded;
+      }
     }
+    return true;
   }
 
-  return count;
+  let left = 1;
+  let right = 1000000;
+
+  while (left < right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    if (canSolve(mid)) right = mid;
+    else left = mid + 1;
+  }
+
+  return left;
 }
 ```
 
@@ -61,26 +54,14 @@ function solution(n, k) {
 
 ## 2
 
-### 문제 - <code>뒤에 있는 큰 수 찾기</code>
+### 문제 - <code>아날로그시계</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(numbers) {
-  const result = new Array(numbers.length).fill(-1);
-  const stack = []; // [index, value]
 
-  for (let i = 0; i < numbers.length; i++) {
-    while (stack.length > 0 && numbers[i] > numbers[stack[stack.length - 1]]) {
-      result[stack.pop()] = numbers[i];
-    }
-    stack.push(i);
-  }
-
-  return result;
-}
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -93,7 +74,7 @@ function solution(numbers) {
 
 ## 3
 
-### 문제 - <code>땅 따먹기</code>
+### 문제 - <code>연속된부분수열의합</code>
 
 ### 알고리즘 설계
 
@@ -102,27 +83,31 @@ function solution(numbers) {
 ### 풀이 코드
 
 ```jsx
-function solution(land) {
-  // 행의 개수
-  const n = land.length;
+function solution(sequence, k) {
+  let left = 0;
+  let right = 0;
+  let sum = sequence[0];
+  let minLen = Infinity;
+  let result = [];
 
-  // dp 배열 생성 (첫 행은 그대로 복사)
-  const dp = Array.from(Array(n), () => new Array(4).fill(0));
-  dp[0] = [...land[0]];
-
-  // 두 번째 행부터 시작
-  for (let i = 1; i < n; i++) {
-    // 각 열에 대해
-    for (let j = 0; j < 4; j++) {
-      // 이전 행에서 현재 열을 제외한 값들 중 최댓값을 더함
-      dp[i][j] =
-        land[i][j] +
-        Math.max(...[...dp[i - 1].slice(0, j), ...dp[i - 1].slice(j + 1)]);
+  while (right < sequence.length) {
+    if (sum === k) {
+      const len = right - left + 1;
+      if (len < minLen) {
+        minLen = len;
+        result = [left, right];
+      }
+      sum -= sequence[left++];
+      if (right + 1 < sequence.length) sum += sequence[++right];
+    } else if (sum < k) {
+      if (right + 1 < sequence.length) sum += sequence[++right];
+      else break;
+    } else {
+      sum -= sequence[left++];
     }
   }
 
-  // 마지막 행에서 최댓값을 반환
-  return Math.max(...dp[n - 1]);
+  return result;
 }
 ```
 

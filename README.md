@@ -1,33 +1,46 @@
 ## 1
 
-### 문제 - <code>모음사전</code>
+### 문제 - <code>퍼즐게임챌린지</code>
 
 ### 알고리즘 설계
+
+(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(word) {
-  // 각 자리수별 영향도 계산
-  // 1번째 자리: 1
-  // 2번째 자리: 1 + 5
-  // 3번째 자리: 1 + 5 + 25
-  // 4번째 자리: 1 + 5 + 25 + 125
-  // 5번째 자리: 1 + 5 + 25 + 125 + 625
-  const weight = [781, 156, 31, 6, 1];
-  const vowels = ["A", "E", "I", "O", "U"];
+function solution(diffs, times, limit) {
+  function canSolve(level) {
+    let total = 0;
 
-  let answer = 0;
+    for (let i = 0; i < diffs.length; i++) {
+      if (diffs[i] <= level) {
+        if (total + times[i] > limit) return false;
+        total += times[i];
+      } else {
+        const fails = diffs[i] - level;
+        const retryTime = times[i] + (i > 0 ? times[i - 1] : 0);
 
-  // 각 자리수별로 계산
-  for (let i = 0; i < word.length; i++) {
-    // 현재 문자가 몇번째 모음인지 찾기
-    const vowelIndex = vowels.indexOf(word[i]);
-    // 해당 자리수의 가중치를 곱하여 더함
-    answer += vowelIndex * weight[i] + 1;
+        if (fails > limit || retryTime > Math.floor(limit / fails))
+          return false;
+        const timeNeeded = retryTime * fails + times[i];
+        if (timeNeeded > limit || total + timeNeeded > limit) return false;
+        total += timeNeeded;
+      }
+    }
+    return true;
   }
 
-  return answer;
+  let left = 1;
+  let right = 1000000;
+
+  while (left < right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    if (canSolve(mid)) right = mid;
+    else left = mid + 1;
+  }
+
+  return left;
 }
 ```
 
@@ -41,31 +54,14 @@ function solution(word) {
 
 ## 2
 
-### 문제 - <code>영어끝말잇기</code>
+### 문제 - <code>아날로그시계</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(n, words) {
-  let cnt = 0;
-  let person = 1;
-  let past = [];
-  for (let i = 0; i < words.length; i++) {
-    if (i % n === 0) cnt++;
-    person = (i % n) + 1; // 참가자 번호 계산 수정
-    if (i > 0 && words[i - 1][words[i - 1].length - 1] !== words[i][0]) {
-      return [person, cnt];
-    }
-    if (past.includes(words[i])) {
-      return [person, cnt];
-    }
-    past.push(words[i]);
-  }
-  return [0, 0];
-}
-ㄴ;
+
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -78,26 +74,40 @@ function solution(n, words) {
 
 ## 3
 
-### 문제 - <code>카드뭉치</code>
+### 문제 - <code>연속된부분수열의합</code>
 
 ### 알고리즘 설계
+
+(왜 이렇게 코드를 작성했는지 이유를 적어주세요)
 
 ### 풀이 코드
 
 ```jsx
-function solution(cards1, cards2, goal) {
-  for (let i = 0; i < 20; i++) {
-    if (goal[0] === cards1[0]) {
-      goal.shift();
-      cards1.shift();
-    } else if (goal[0] === cards2[0]) {
-      goal.shift();
-      cards2.shift();
+function solution(sequence, k) {
+  let left = 0;
+  let right = 0;
+  let sum = sequence[0];
+  let minLen = Infinity;
+  let result = [];
+
+  while (right < sequence.length) {
+    if (sum === k) {
+      const len = right - left + 1;
+      if (len < minLen) {
+        minLen = len;
+        result = [left, right];
+      }
+      sum -= sequence[left++];
+      if (right + 1 < sequence.length) sum += sequence[++right];
+    } else if (sum < k) {
+      if (right + 1 < sequence.length) sum += sequence[++right];
+      else break;
     } else {
-      return "No";
+      sum -= sequence[left++];
     }
   }
-  return goal.length === 0 ? "Yes" : "No";
+
+  return result;
 }
 ```
 

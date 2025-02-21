@@ -1,6 +1,6 @@
 ## 1
 
-### 문제 - <code>할인행사</code>
+### 문제 - <code>숫자의 표현</code>
 
 ### 알고리즘 설계
 
@@ -9,31 +9,12 @@
 ### 풀이 코드
 
 ```jsx
-function solution(want, number, discount) {
-  let cnt = 0;
-  let i = 0;
-  const period = 10;
-
-  while (i <= discount.length - period) {
-    let arr = discount.slice(i, i + period);
-    let vaild = true;
-
-    for (let j = 0; j < want.length; j++) {
-      let count = arr.reduce((a, e) => {
-        if (want[j] === e) a++;
-        return a;
-      }, 0);
-      if (count !== number[j]) {
-        vaild = false;
-        break;
-      }
-    }
-    if (vaild) cnt++;
-
-    i++;
+function solution(n) {
+  let answer = 0;
+  for (let i = 0; i <= n; i++) {
+    if (n % i === 0 && i % 2 === 1) answer++;
   }
-
-  return cnt;
+  return answer;
 }
 ```
 
@@ -47,37 +28,27 @@ function solution(want, number, discount) {
 
 ## 2
 
-### 문제 - <code>프로세스</code>
+### 문제 - <code>숫자의 표현</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(priorities, location) {
-  let answer = 0;
-  let arr = [];
-  let max_value = Math.max(...priorities);
-
-  // 위치 배열 만들기
-  for (let i = 0; i < priorities.length; i++) {
-    arr.push(i);
-  }
-
-  // priorities 배열이 비어있을 때까지 반복
-  while (priorities.length != 0) {
-    max_value = Math.max(...priorities);
-
-    if (priorities[0] < max_value) {
-      priorities.push(priorities.shift());
-      arr.push(arr.shift());
+function solution(n) {
+  let cnt = 0;
+  while (n !== 0) {
+    if (n % 2 !== 0) {
+      n = Math.floor(n / 2);
+      cnt++;
     } else {
-      answer += 1;
-      priorities.shift();
-      if (arr.shift() == location) return answer;
+      n = n / 2;
     }
   }
+  return cnt;
 }
+
+//5000 2500 1250 625 312(+1) 156 78 39 19(+1) 9(+1) 4(+1) 2 1(+1) 0
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -90,7 +61,7 @@ function solution(priorities, location) {
 
 ## 3
 
-### 문제 - <code>하노이의탑</code>
+### 문제 - <code></code>
 
 ### 알고리즘 설계
 
@@ -99,32 +70,7 @@ function solution(priorities, location) {
 ### 풀이 코드
 
 ```jsx
-function solution(n) {
-  const moves = [];
 
-  // 재귀적으로 원판을 움직이는 함수
-  function hanoi(n, from, to, aux) {
-    if (n === 1) {
-      // 원판이 하나일 때는 직접 목적지로 이동
-      moves.push([from, to]);
-      return;
-    }
-
-    // n-1개의 원판을 보조 기둥으로 이동
-    hanoi(n - 1, from, aux, to);
-
-    // 가장 큰 원판을 목적지로 이동
-    moves.push([from, to]);
-
-    // n-1개의 원판을 보조 기둥에서 목적지로 이동
-    hanoi(n - 1, aux, to, from);
-  }
-
-  // 1번 기둥에서 3번 기둥으로 n개의 원판을 이동
-  hanoi(n, 1, 3, 2);
-
-  return moves;
-}
 ```
 
 ### 개인적인 회고와 다른 풀이

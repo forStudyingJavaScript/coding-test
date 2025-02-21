@@ -1,6 +1,6 @@
 ## 1
 
-### 문제 - <code>퍼즐게임챌린지</code>
+### 문제 - <code>할인행사</code>
 
 ### 알고리즘 설계
 
@@ -9,38 +9,31 @@
 ### 풀이 코드
 
 ```jsx
-function solution(diffs, times, limit) {
-  function canSolve(level) {
-    let total = 0;
+function solution(want, number, discount) {
+  let cnt = 0;
+  let i = 0;
+  const period = 10;
 
-    for (let i = 0; i < diffs.length; i++) {
-      if (diffs[i] <= level) {
-        if (total + times[i] > limit) return false;
-        total += times[i];
-      } else {
-        const fails = diffs[i] - level;
-        const retryTime = times[i] + (i > 0 ? times[i - 1] : 0);
+  while (i <= discount.length - period) {
+    let arr = discount.slice(i, i + period);
+    let vaild = true;
 
-        if (fails > limit || retryTime > Math.floor(limit / fails))
-          return false;
-        const timeNeeded = retryTime * fails + times[i];
-        if (timeNeeded > limit || total + timeNeeded > limit) return false;
-        total += timeNeeded;
+    for (let j = 0; j < want.length; j++) {
+      let count = arr.reduce((a, e) => {
+        if (want[j] === e) a++;
+        return a;
+      }, 0);
+      if (count !== number[j]) {
+        vaild = false;
+        break;
       }
     }
-    return true;
+    if (vaild) cnt++;
+
+    i++;
   }
 
-  let left = 1;
-  let right = 1000000;
-
-  while (left < right) {
-    const mid = Math.floor(left + (right - left) / 2);
-    if (canSolve(mid)) right = mid;
-    else left = mid + 1;
-  }
-
-  return left;
+  return cnt;
 }
 ```
 
@@ -54,14 +47,37 @@ function solution(diffs, times, limit) {
 
 ## 2
 
-### 문제 - <code>아날로그시계</code>
+### 문제 - <code>프로세스</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
+function solution(priorities, location) {
+  let answer = 0;
+  let arr = [];
+  let max_value = Math.max(...priorities);
 
+  // 위치 배열 만들기
+  for (let i = 0; i < priorities.length; i++) {
+    arr.push(i);
+  }
+
+  // priorities 배열이 비어있을 때까지 반복
+  while (priorities.length != 0) {
+    max_value = Math.max(...priorities);
+
+    if (priorities[0] < max_value) {
+      priorities.push(priorities.shift());
+      arr.push(arr.shift());
+    } else {
+      answer += 1;
+      priorities.shift();
+      if (arr.shift() == location) return answer;
+    }
+  }
+}
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -74,7 +90,7 @@ function solution(diffs, times, limit) {
 
 ## 3
 
-### 문제 - <code>연속된부분수열의합</code>
+### 문제 - <code>하노이의탑</code>
 
 ### 알고리즘 설계
 
@@ -83,31 +99,31 @@ function solution(diffs, times, limit) {
 ### 풀이 코드
 
 ```jsx
-function solution(sequence, k) {
-  let left = 0;
-  let right = 0;
-  let sum = sequence[0];
-  let minLen = Infinity;
-  let result = [];
+function solution(n) {
+  const moves = [];
 
-  while (right < sequence.length) {
-    if (sum === k) {
-      const len = right - left + 1;
-      if (len < minLen) {
-        minLen = len;
-        result = [left, right];
-      }
-      sum -= sequence[left++];
-      if (right + 1 < sequence.length) sum += sequence[++right];
-    } else if (sum < k) {
-      if (right + 1 < sequence.length) sum += sequence[++right];
-      else break;
-    } else {
-      sum -= sequence[left++];
+  // 재귀적으로 원판을 움직이는 함수
+  function hanoi(n, from, to, aux) {
+    if (n === 1) {
+      // 원판이 하나일 때는 직접 목적지로 이동
+      moves.push([from, to]);
+      return;
     }
+
+    // n-1개의 원판을 보조 기둥으로 이동
+    hanoi(n - 1, from, aux, to);
+
+    // 가장 큰 원판을 목적지로 이동
+    moves.push([from, to]);
+
+    // n-1개의 원판을 보조 기둥에서 목적지로 이동
+    hanoi(n - 1, aux, to, from);
   }
 
-  return result;
+  // 1번 기둥에서 3번 기둥으로 n개의 원판을 이동
+  hanoi(n, 1, 3, 2);
+
+  return moves;
 }
 ```
 

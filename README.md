@@ -1,6 +1,6 @@
 ## 1
 
-### 문제 - <code>숫자의 표현</code>
+### 문제 - <code>주식가격</code>
 
 ### 알고리즘 설계
 
@@ -9,12 +9,25 @@
 ### 풀이 코드
 
 ```jsx
-function solution(n) {
-  let answer = 0;
-  for (let i = 0; i <= n; i++) {
-    if (n % i === 0 && i % 2 === 1) answer++;
+function solution(prices) {
+  const len = prices.length;
+  const result = new Array(len).fill(0);
+  const stack = [];
+
+  for (let i = 0; i < len; i++) {
+    while (stack.length && prices[i] < prices[stack[stack.length - 1]]) {
+      let top = stack.pop();
+      let diff = i - top;
+      result[top] = diff;
+    }
+    stack.push(i);
   }
-  return answer;
+  while (stack.length) {
+    const top = stack.pop();
+    result[top] = len - 1 - top;
+  }
+
+  return result;
 }
 ```
 
@@ -28,27 +41,33 @@ function solution(n) {
 
 ## 2
 
-### 문제 - <code>숫자의 표현</code>
+### 문제 - <code>스킬트리</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(n) {
-  let cnt = 0;
-  while (n !== 0) {
-    if (n % 2 !== 0) {
-      n = Math.floor(n / 2);
-      cnt++;
-    } else {
-      n = n / 2;
-    }
-  }
-  return cnt;
-}
+function solution(skill, skill_trees) {
+  let result = 0;
 
-//5000 2500 1250 625 312(+1) 156 78 39 19(+1) 9(+1) 4(+1) 2 1(+1) 0
+  for (const tree of skill_trees) {
+    const queue = [...skill];
+    let isValid = true;
+
+    for (const s of tree) {
+      if (skill.includes(s)) {
+        if (s !== queue[0]) {
+          isValid = false;
+          break;
+        }
+        queue.shift();
+      }
+    }
+    if (isValid) result++;
+  }
+  return result;
+}
 ```
 
 ### 개인적인 회고와 다른 풀이
@@ -61,7 +80,7 @@ function solution(n) {
 
 ## 3
 
-### 문제 - <code></code>
+### 문제 - <code>택배상자</code>
 
 ### 알고리즘 설계
 
@@ -70,7 +89,24 @@ function solution(n) {
 ### 풀이 코드
 
 ```jsx
+function solution(order) {
+  let result = 0;
+  const stack = [];
+  let orderIndex = 0; // order 배열의 인덱스를 관리
 
+  for (let i = 1; i <= order.length; i++) {
+    stack.push(i);
+
+    // 스택의 top이 현재 찾는 순서와 일치하면 처리
+    while (stack.length && stack[stack.length - 1] === order[orderIndex]) {
+      stack.pop();
+      orderIndex++;
+      result++;
+    }
+  }
+
+  return result;
+}
 ```
 
 ### 개인적인 회고와 다른 풀이

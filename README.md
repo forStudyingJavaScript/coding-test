@@ -1,6 +1,6 @@
 ## 1
 
-### 문제 - <code>주식가격</code>
+### 문제 - <code>짝지어 제거하기</code>
 
 ### 알고리즘 설계
 
@@ -9,25 +9,37 @@
 ### 풀이 코드
 
 ```jsx
-function solution(prices) {
-  const len = prices.length;
-  const result = new Array(len).fill(0);
-  const stack = [];
-
-  for (let i = 0; i < len; i++) {
-    while (stack.length && prices[i] < prices[stack[stack.length - 1]]) {
-      let top = stack.pop();
-      let diff = i - top;
-      result[top] = diff;
+class Stack {
+  constructor() {
+    this.storage = new Object();
+    this.size = 0;
+  }
+  push(element) {
+    this.size++;
+    this.storage[this.size] = element;
+  }
+  pop() {
+    let removed = this.storage[this.size];
+    delete this.storage[this.size];
+    this.size--;
+    return removed;
+  }
+  top() {
+    return this.storage[this.size];
+  }
+}
+function solution(s) {
+  const stack = new Stack();
+  for (let i = 0; i < s.length; i++) {
+    if (stack.top() === s[i]) {
+      stack.pop();
+      continue;
+    } else {
+      stack.push(s[i]);
+      continue;
     }
-    stack.push(i);
   }
-  while (stack.length) {
-    const top = stack.pop();
-    result[top] = len - 1 - top;
-  }
-
-  return result;
+  return stack.size > 0 ? 0 : 1;
 }
 ```
 
@@ -41,32 +53,21 @@ function solution(prices) {
 
 ## 2
 
-### 문제 - <code>스킬트리</code>
+### 문제 - <code>튜플</code>
 
 ### 알고리즘 설계
 
 ### 풀이 코드
 
 ```jsx
-function solution(skill, skill_trees) {
-  let result = 0;
+function solution(s) {
+  let set = new Set();
 
-  for (const tree of skill_trees) {
-    const queue = [...skill];
-    let isValid = true;
-
-    for (const s of tree) {
-      if (skill.includes(s)) {
-        if (s !== queue[0]) {
-          isValid = false;
-          break;
-        }
-        queue.shift();
-      }
+  for (let i = 0; i < s.length; i++) {
+    if (isNaN(s[i]) === false) {
+      set.add(s[i]);
     }
-    if (isValid) result++;
   }
-  return result;
 }
 ```
 
